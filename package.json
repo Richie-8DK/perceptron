@@ -1,0 +1,22 @@
+{
+  "name": "perceptron",
+  "version": "1.0.0",
+  "description": "A simple Perceptron app approximating a linear function.",
+  "author": "",
+  "private": true,
+  "scripts": {
+    "dev": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "dependencies": {
+    "vue": "^2.5.16",
+    "vue-hot-reload-api": "^2.3.0"
+  },
+  "devDependencies": {
+    "@vue/component-compiler-utils": "^2.0.0",
+    "parcel-bundler": "^1.7.0",
+    "vue-template-compiler": "^2.5.16"
+  }
+}
