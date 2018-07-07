@@ -7397,9 +7397,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var Perceptron = exports.Perceptron = function () {
   function Perceptron() {
+    var step = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0.4;
+
     _classCallCheck(this, Perceptron);
 
     this.weights = [Math.random(), Math.random(), Math.random()];
+    this.step = step;
   }
 
   _createClass(Perceptron, [{
@@ -7410,14 +7413,16 @@ var Perceptron = exports.Perceptron = function () {
   }, {
     key: "train",
     value: function train(x, y, truth) {
+      var _this = this;
+
       var error = truth - this.predict(x, y);
 
       // adjust weights
       var input = [x, y, 1];
       this.weights = this.weights.map(function (weight, i) {
-        return 0.4 * error * input[i] + weight;
+        return _this.step * error * input[i] + weight;
       });
-      // points.forEach(point => point.predicted = this.predict(point.x, point.y) === truth(point.x, point.y))
+
       return error;
     }
   }, {
@@ -7776,6 +7781,16 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 function randInRange(start, end) {
   var dif = end - start;
@@ -7786,16 +7801,11 @@ exports.default = {
   name: 'App',
   data: function data() {
     return {
-      points: [].concat(_toConsumableArray(Array(1000))).map(function (_) {
-        return {
-          x: randInRange(-1, 1),
-          y: randInRange(-1, 1),
-          predicted: false
-        };
-      }),
-      m: Math.tan(randInRange(-Math.PI / 2, Math.PI / 2)),
+      numberOfPoints: 1000,
+      slope: randInRange(-Math.PI / 2, Math.PI / 2),
       b: randInRange(-1, 1),
-      p: new _Perceptron.Perceptron()
+      p: new _Perceptron.Perceptron(),
+      delay: 50
     };
   },
   methods: {
@@ -7818,7 +7828,26 @@ exports.default = {
         }).length > 0) {
           _this.train();
         }
-      }, 50);
+      }, this.delay);
+    },
+    randomizeWeights: function randomizeWeights() {
+      this.p.weights = this.p.weights.map(function (weight) {
+        return weight = weight * randInRange(-2, 2);
+      });
+    }
+  },
+  computed: {
+    points: function points() {
+      return [].concat(_toConsumableArray(Array(this.numberOfPoints))).map(function (_) {
+        return {
+          x: randInRange(-1, 1),
+          y: randInRange(-1, 1),
+          predicted: false
+        };
+      });
+    },
+    m: function m() {
+      return Math.tan(this.slope * (Math.PI / 180));
     }
   },
   mounted: function mounted() {
@@ -7878,7 +7907,162 @@ exports.default = {
         })
       ],
       2
-    )
+    ),
+    _vm._v(" "),
+    _c("p", [
+      _vm._v("create "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model.lazy.number",
+            value: _vm.numberOfPoints,
+            expression: "numberOfPoints",
+            modifiers: { lazy: true, number: true }
+          }
+        ],
+        attrs: { type: "number", placeholder: _vm.points.length, min: "0" },
+        domProps: { value: _vm.numberOfPoints },
+        on: {
+          change: function($event) {
+            _vm.numberOfPoints = _vm._n($event.target.value)
+          },
+          blur: function($event) {
+            _vm.$forceUpdate()
+          }
+        }
+      }),
+      _vm._v("new points")
+    ]),
+    _vm._v("\n  delay: "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model.number",
+          value: _vm.delay,
+          expression: "delay",
+          modifiers: { number: true }
+        }
+      ],
+      attrs: { type: "number", placeholder: "delay", min: "0", max: "1000" },
+      domProps: { value: _vm.delay },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.delay = _vm._n($event.target.value)
+        },
+        blur: function($event) {
+          _vm.$forceUpdate()
+        }
+      }
+    }),
+    _vm._v("ms\n  "),
+    _c("p", [
+      _vm._v("step: "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model.number",
+            value: _vm.p.step,
+            expression: "p.step",
+            modifiers: { number: true }
+          }
+        ],
+        attrs: { type: "number", placeholder: "step", min: "0", max: "10" },
+        domProps: { value: _vm.p.step },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.p, "step", _vm._n($event.target.value))
+          },
+          blur: function($event) {
+            _vm.$forceUpdate()
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("p", [
+      _vm._v("slope: "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model.number",
+            value: _vm.slope,
+            expression: "slope",
+            modifiers: { number: true }
+          }
+        ],
+        attrs: { type: "range", min: -90, max: 90, step: "0.1" },
+        domProps: { value: _vm.slope },
+        on: {
+          __r: function($event) {
+            _vm.slope = _vm._n($event.target.value)
+          },
+          blur: function($event) {
+            _vm.$forceUpdate()
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("p", [
+      _vm._v("b: "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model.number",
+            value: _vm.b,
+            expression: "b",
+            modifiers: { number: true }
+          }
+        ],
+        attrs: {
+          type: "range",
+          min: -1 - _vm.m,
+          max: 1 + _vm.m,
+          step: "0.001"
+        },
+        domProps: { value: _vm.b },
+        on: {
+          __r: function($event) {
+            _vm.b = _vm._n($event.target.value)
+          },
+          blur: function($event) {
+            _vm.$forceUpdate()
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("p", [_vm._v("f(x) = x * " + _vm._s(_vm.m) + " + " + _vm._s(_vm.b))]),
+    _vm._v(" "),
+    _c("p", [
+      _vm._v(
+        "f(x) = x * " +
+          _vm._s(-_vm.p.weights[0] / _vm.p.weights[1]) +
+          " + " +
+          _vm._s(-_vm.p.weights[2] / _vm.p.weights[1])
+      )
+    ]),
+    _vm._v(" "),
+    _c("p", [_vm._v("Weights:")]),
+    _vm._v(" "),
+    _c("p", [_vm._v(_vm._s(_vm.p.weights))]),
+    _c("button", { on: { click: _vm.randomizeWeights } }, [
+      _vm._v("randomize")
+    ]),
+    _c("br"),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.train } }, [_vm._v("retrain")])
   ])
 }
 var staticRenderFns = []
@@ -7967,7 +8151,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '44521' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '40351' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

@@ -1,7 +1,8 @@
 export class Perceptron {
 
-  constructor() {
+  constructor(step = 0.4) {
     this.weights = [Math.random(), Math.random(), Math.random()]
+    this.step = step
   }
 
   predict(x, y) {
@@ -13,8 +14,8 @@ export class Perceptron {
 
     // adjust weights
     let input = [x,y,1]
-    this.weights = this.weights.map((weight, i) => 0.4 * error * input[i] + weight)
-    // points.forEach(point => point.predicted = this.predict(point.x, point.y) === truth(point.x, point.y))
+    this.weights = this.weights.map((weight, i) => this.step * error * input[i] + weight)
+
     return error
   }
 
