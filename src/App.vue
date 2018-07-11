@@ -2,7 +2,8 @@
   <div id="app">
     <svg width=500 height=500 viewBox="-1 -1 2 2">
       <circle
-        v-for="point in points"
+        v-for="(point, index) in points"
+        :key="index"
         :cx="point.x"
         :cy="point.y"
         :fill="fun(point.x) > point.y ? 'red' : 'green'"
@@ -41,52 +42,55 @@
 <script>
 import { Perceptron } from './Perceptron'
 
-function randInRange(start, end) {
+function randInRange (start, end) {
   let dif = end - start
   return Math.random() * dif + start
 }
 
 export default {
   name: 'App',
-  data: function() {
+  data: function () {
     return {
       numberOfPoints: 1000,
-      slope: randInRange(-Math.PI/2, Math.PI/2),
+      slope: randInRange(-Math.PI / 2, Math.PI / 2),
       b: randInRange(-1, 1),
       p: new Perceptron(),
       delay: 50
     }
   },
   methods: {
-    fun(x) {
+    fun (x) {
       return x * this.m + this.b
     },
-    truth(x, y) {
+    truth (x, y) {
       return this.fun(x) > y ? 1 : -1
     },
-    train() {
-      this.points.forEach(point =>
-        point.predicted = this.p.train( point.x, point.y, this.truth(point.x, point.y) ) === 0)
+    train () {
+      for (let point of this.points) {
+        point.predicted = this.p.train(point.x, point.y, this.truth(point.x, point.y)) === 0
+      }
       this.$forceUpdate()
       setTimeout(() => {
-        if (this.points.filter(point => ! point.predicted).length > 0) {
+        if (this.points.filter(point => !point.predicted).length > 0) {
           this.train()
         }
       }, this.delay)
     },
-    randomizeWeights() {
-      this.p.weights = this.p.weights.map(weight => weight = weight * randInRange(-2, 2))
+    randomizeWeights () {
+      this.p.weights = this.p.weights.map(weight => weight * randInRange(-2, 2))
     }
   },
   computed: {
-    points() {
-      return [...Array(this.numberOfPoints)].map(_ => { return {
-        x: randInRange(-1, 1),
-        y: randInRange(-1, 1),
-        predicted: false
-      }})
+    points () {
+      return [...Array(this.numberOfPoints)].map(_ => {
+        return {
+          x: randInRange(-1, 1),
+          y: randInRange(-1, 1),
+          predicted: false
+        }
+      })
     },
-    m() { return Math.tan(this.slope * (Math.PI /180)) }
+    m () { return Math.tan(this.slope * (Math.PI / 180)) }
   },
   mounted: function () {
     this.train()
