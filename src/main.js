@@ -2,6 +2,8 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import 'bulma/css/bulma.css'
+import 'bulma-slider/dist/css/bulma-slider.min.css'
 
 Vue.config.productionTip = false
 

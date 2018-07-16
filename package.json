@@ -11,6 +11,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "bulma": "^0.7.1",
+    "bulma-slider": "^2.0.0",
     "vue": "^2.5.2"
   },
   "devDependencies": {

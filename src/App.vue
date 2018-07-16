@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <svg width=500 height=500 viewBox="-1 -1 2 2">
+  <div id="app" class="columns">
+    <svg width=500 height=500 viewBox="-1 -1 2 2" class="column is-half">
       <circle
         v-for="(point, index) in points"
         :key="index"
@@ -26,16 +26,18 @@
       :x2="1"
       :y2="p.fun(1)"></line>
     </svg>
-    <p>create <input type="number" v-model.lazy.number="numberOfPoints" :placeholder="points.length" min="0">new points</p>
-    delay: <input type="number" v-model.number="delay" placeholder="delay" min="0" max="1000">ms
-    <p>step: <input type="number" v-model.number="p.step" placeholder="step" min="0" max="10"></p>
-    <p>slope: <input type="range" v-model.number="slope" :min="-90" :max="90" step="0.1"></p>
-    <p>b: <input type="range" v-model.number="b" :min="-1 - m" :max="1 + m" step="0.001"></p>
-    <p>f(x) = x * {{m}} + {{b}}</p>
-    <p>f(x) = x * {{-p.weights[0]/p.weights[1]}} + {{-p.weights[2]/p.weights[1]}}</p>
-    <p>Weights:</p>
-    <p>{{p.weights}}</p><button @click="randomizeWeights">randomize</button><br>
-    <button @click="train">retrain</button>
+    <div id="settings" class="column container is-half field">
+      <p>create <input type="number" class="control" v-model.lazy.number="numberOfPoints" :placeholder="points.length" min="0">new points</p>
+      delay: <input type="number" class="control" v-model.number="delay" placeholder="delay" min="0" max="1000">ms
+      <p>step: <input type="number" class="control" v-model.number="p.step" placeholder="step" min="0" max="10"></p>
+      <p>slope: <input type="range" class="slider is-circle" v-model.number="slope" :min="-90" :max="90" step="0.1"></p>
+      <p>b: <input type="range" class="slider is-circle" v-model.number="b" :min="-1 - m" :max="1 + m" step="0.001"></p>
+      <p>f(x) = x * {{m}} + {{b}}</p>
+      <p>f(x) = x * {{-p.weights[0]/p.weights[1]}} + {{-p.weights[2]/p.weights[1]}}</p>
+      <p>Weights:</p>
+      <p>{{p.weights}}</p><button class="button" @click="randomizeWeights">randomize</button><br>
+      <button class="button" @click="train">retrain</button>
+    </div>
   </div>
 </template>
 
@@ -105,6 +107,22 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+
+  align-items: center;
+  justify-content: center;
+  height: fill-available;
+  max-width: 90rem;
+  margin: auto;
+  background-color: #f8f8f8;
+}
+
+html {
+  overflow: visible;
+}
+
+#app > * {
+  margin: auto;
+  /* background-color: #03d1b2; */
+  max-width: 100%;
 }
 </style>
