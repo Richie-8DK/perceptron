@@ -26,17 +26,19 @@
       :x2="1"
       :y2="p.fun(1)"></line>
     </svg>
-    <div id="settings" class="column container is-half field">
-      <p>create <input type="number" class="control" v-model.lazy.number="numberOfPoints" :placeholder="points.length" min="0">new points</p>
-      delay: <input type="number" class="control" v-model.number="delay" placeholder="delay" min="0" max="1000">ms
-      <p>step: <input type="number" class="control" v-model.number="p.step" placeholder="step" min="0" max="10"></p>
-      <p>slope: <input type="range" class="slider is-circle" v-model.number="slope" :min="-90" :max="90" step="0.1"></p>
-      <p>b: <input type="range" class="slider is-circle" v-model.number="b" :min="-1 - m" :max="1 + m" step="0.001"></p>
-      <p>f(x) = x * {{m}} + {{b}}</p>
-      <p>f(x) = x * {{-p.weights[0]/p.weights[1]}} + {{-p.weights[2]/p.weights[1]}}</p>
-      <p>Weights:</p>
-      <p>{{p.weights}}</p><button class="button" @click="randomizeWeights">randomize</button><br>
-      <button class="button" @click="train">retrain</button>
+    <div id="shell" class="column container is-half field">
+      <div id="settings">
+        <p>create <input type="number" class="control is-info" v-model.lazy.number="numberOfPoints" :placeholder="points.length" min="0">new points</p>
+        delay: <input type="number" class="control is-info" v-model.number="delay" placeholder="delay" min="0" max="1000">ms
+        <p>step: <input type="number" class="control is-info" v-model.number="p.step" placeholder="step" min="0" max="10"></p>
+        <p>slope: <input type="range" class="slider is-circle is-info" v-model.number="slope" :min="-90" :max="90" step="0.1"></p>
+        <p>b: <input type="range" class="slider is-circle is-info" v-model.number="b" :min="-1 - m" :max="1 + m" step="0.001"></p>
+        <p>f(x) = x * {{m}} + {{b}}</p>
+        <p>f(x) = x * {{-p.weights[0]/p.weights[1]}} + {{-p.weights[2]/p.weights[1]}}</p>
+        <p>Weights:</p>
+        <p>{{p.weights}}</p><button class="button is-info" @click="randomizeWeights">randomize</button><br>
+        <button class="button is-danger" @click="train">retrain</button>
+      </div>
     </div>
   </div>
 </template>
@@ -111,7 +113,7 @@ export default {
   align-items: center;
   justify-content: center;
   height: fill-available;
-  max-width: 90rem;
+  /* max-width: 90rem; */
   margin: auto;
   background-color: #f8f8f8;
 }
@@ -121,8 +123,34 @@ html {
 }
 
 #app > * {
+  padding: 0px;
   margin: auto;
-  /* background-color: #03d1b2; */
   max-width: 100%;
+  max-height: 100%;
 }
+
+#app {
+  padding: 3rem;
+}
+
+#shell {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+#settings {
+  border-style: solid;
+  border-radius: 10px;
+  border-color: #ffdd57;
+  border-width: medium;
+
+  padding: 0.5rem;
+  background-color: #f5f5f5;
+}
+
+#settings > * {
+  margin: 0.5rem;
+}
+
 </style>
