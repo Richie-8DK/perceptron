@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="columns">
-    <svg width=500 height=500 viewBox="-1 -1 2 2" class="column is-half">
+    <svg width=500 viewBox="-1 -1 2 2" class="column is-half">
       <circle
         v-for="(point, index) in points"
         :key="index"
