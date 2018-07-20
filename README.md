@@ -2,6 +2,10 @@
 
 > A simple visualisation of a perceptron approximating a linear function in Vue.js .
 
+try it out: https://richie-8dk.github.io/perceptron/
+
+![show](show.gif)
+
 ## Build Setup
 
 ``` bash
